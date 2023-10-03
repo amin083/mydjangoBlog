@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}
+articles
+{% endblock %}
+{% block content %}
+<div>
+    <h1>Order_list_history</h1>
+    <div class="accounts">
+        {% for order in order %}
+        <div class="accounts">
+        <h2> <a href="{% url 'order_list' user=user.username %}">View Orders</a></h2>
+        <p>{{ order.title }}</p>
+        <p>{{ order.snippet }}</p>
+        <p>{{ order.date }}</p>
+    </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}

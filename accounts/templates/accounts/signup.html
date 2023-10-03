@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>signup</h1>
+    <div class="container-sm center">
+        <div class="card col-sm-6 mx-auto ">
+    <form class="card-body d-grid" action="{% url 'accounts:signup' %}" method="POST">
+
+    {{ form }}
+    {% csrf_token %}
+    <input type="submit" value="signup">
+    </form>
+{% endblock %}

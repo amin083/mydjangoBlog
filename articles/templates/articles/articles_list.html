@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}
+articles
+{% endblock %}
+{% block content %}
+<div>
+    <h1>Articles_list</h1>
+    <div class="account">
+        {% for articles in articles %}
+        <div class="article">
+        <h2> <a href="{% url 'articles:detail' slug=articles.slug %}">{{ articles.title }}</a> </h2>
+        <p>{{ articles.snippet }}</p>
+        <p>{{ articles.date }}</p>
+        <p class="author">added by {{ articles.author.username }}</p>
+    </div>
+    {% endfor %}
+    </div>
+
+{% endblock %}

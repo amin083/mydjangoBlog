@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="order_detail">
+    <div class="accounts">
+        <img src="{{ accounts.image.url }}">
+        <h4>{{ accounts.title }}</h4>
+        <p>{{ accounts.body }}</p>
+        <p>{{ accounts.date }}</p>
+    </div>
+</div>
+{% endblock %}

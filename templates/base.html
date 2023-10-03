@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.rtl.min.css"
+        integrity="sha384-PRrgQVJ8NNHGieOA1grGdCTIt4h21CzJs6SnWH4YMQ6G5F5+IEzOHz67L4SQaF0o" crossorigin="anonymous">
+    <title>
+        {% block title %}
+    تولید محتوا
+        {% endblock %}
+    </title>
+<link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body  style="background-color: #C4D7B2;">
+    <header>
+        <h2><a href="{% url 'articles:list' %}">LOGO</a></h2>
+    <nav>
+       <ul>
+           {% if user.is_authenticated %}
+            <li>
+                <form class="logout_link" action="{% url 'accounts:logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">logout</button>
+                </form>
+            </li>
+             <li>
+                <a href="{% url 'accounts:user_profile' user=user.username %}">User Profile</a>
+             </li>
+           {% else %}
+            <li>
+            <a href="{% url 'accounts:login' %}">login</a>
+            </li>
+            <li>
+            <a href="{% url 'accounts:signup' %}">signup</a>
+            </li>
+           {% endif %}
+       </ul>
+    </nav>
+
+    </header>
+    <div class="wrapper">
+        {% block content %}
+        {% endblock %}
+
+    </div>
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+</body>
+</html>

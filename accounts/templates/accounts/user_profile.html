@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+<h1>پنل کاربری</h1>
+    <div style=" display: flex; justify-content: space-around; align-items: center;">
+      {% csrf_token %}
+            <a href="{% url 'accounts:situation' %}"> وضعیت </a>
+            <a href="{% url 'accounts:order_list' %}">تاریخچه</a>
+            <a href="{% url 'accounts:create' %}"> سفارش تولید محتوا</a>
+    </div>
+{% endblock %}
