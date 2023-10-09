@@ -2,10 +2,12 @@
 {% block content %}
 <div class="order_detail">
     <div class="accounts">
-        <img src="{{ accounts.image.url }}">
-        <h4>{{ accounts.title }}</h4>
-        <p>{{ accounts.body }}</p>
-        <p>{{ accounts.date }}</p>
+        <img src="{{ order.image.url }}">
+        <h4>{{ order.title }}</h4>
+        <p>{{ order.body }}</p>
+        <p>{{ order.keyword }}</p>
+        <p>{{ order.date }}</p>
+        <p>{{ order.image }}</p>
     </div>
 </div>
 {% endblock %}

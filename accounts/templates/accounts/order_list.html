@@ -6,14 +6,13 @@ articles
 <div>
     <h1>Order_list_history</h1>
     <div class="accounts">
-        {% for order in order %}
-        <div class="accounts">
-        <h2> <a href="{% url 'order_list' user=user.username %}">View Orders</a></h2>
-        <p>{{ order.title }}</p>
-        <p>{{ order.snippet }}</p>
-        <p>{{ order.date }}</p>
-    </div>
-    {% endfor %}
+    <h2>View Order</h2>
+        {% for order in orders %}
+            <div class="accounts"></div>
+            <h2> <a href="{% url 'accounts:detail' order_id=order.id %}">{{ order.title }}</a></h2>
+            <p>{{ order.snippet }}</p>
+            <p>{{ order.date }}</p>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

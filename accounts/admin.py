@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id', User, 'title', 'keyword']
+    list_display = ['id', 'user', 'title', 'keyword']
 
 
 admin.site.register(Order,OrderAdmin)
