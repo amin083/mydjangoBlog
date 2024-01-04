@@ -4,8 +4,10 @@ from .models import Order
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['title','body', 'keyword']
+        fields = ['title','body', 'keyword','num_word','typ_content','level_content']
 
+class UploadFileForm(forms.Form):
+    file = forms.FileField()
     def save(self, commit=True):
         order = super().save(commit=False)
         if commit:

@@ -1,13 +1,82 @@
 {% extends 'base.html' %}
 {% block content %}
 
- <p>hello {{ user }}</p>
 
-<h1>پنل کاربری</h1>
-    <div style=" display: flex; justify-content: space-around; align-items: center;">
-      {% csrf_token %}
-            <a href="{% url 'about' %}"> درباره ما </a>
-            <a href="{% url 'accounts:order_list' %}">تاریخچه</a>
-            <a href="{% url 'accounts:create' %}"> سفارش تولید محتوا</a>
-    </div>
-{% endblock %}
+    <div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <span class="fs-5 d-none d-sm-inline"><h3>سلام {{ user }}</h3></span>
+                </a>
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link align-middle px-0">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline"> </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'accounts:order_list' %}"><span class="ms-1 d-none d-sm-inline">وضعیت سفارشات</span> </a>
+                            <li class="w-100">
+                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">شارژ کیف پول</span></a>
+                            </li>
+                            <li class="w-100">
+                                <a href="{% url 'about' %}" class="nav-link px-0"> <span class="d-none d-sm-inline">درباره ما</span></a>
+                            </li>
+                            <li class="w-100">
+                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline"> ارتباط با ما</span></a>
+                            </li>
+                            <li>
+                                <form class="logout_link" action="{% url 'accounts:logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit">خروج</button>
+                                </form>
+                            </li>
+                                <div class="dropdown pb-4">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col py-3">
+                        <div class="container mt-3">
+
+
+
+                        <div class="row row-cols-3 g-4">
+                          <div class="col">
+                            <div class="card">
+                              <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill">
+                              <div class="card-body">
+                                <h5 class="card-title"><a href="{% url 'accounts:updat_customer' %}">ویراستاری مقالات شما</a></h5>
+                                <p class="card-text">
+                                  This is a longer card with supporting text below as a natural lead-in to
+                                  additional content. This content is a little bit longer.
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="card">
+                              <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/042.webp" class="card-img-top" alt="Palm Springs Road">
+                              <div class="card-body">
+                                <h5><a href="{% url 'accounts:create' %}"> تولید محتوا</a></h5>
+                                <p class="card-text">
+                                  This is a longer card with supporting text below as a natural lead-in to
+                                  additional content. This content is a little bit longer.
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="card">
+                              <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/043.webp" class="card-img-top" alt="Los Angeles Skyscrapers">
+                              <div class="card-body">
+                                <h5 class="card-title">بارگذاری مقالات</h5>
+                                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+                                  additional content. This content is a little bit longer.</p>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                              {% csrf_token %}
+                        {% endblock %}

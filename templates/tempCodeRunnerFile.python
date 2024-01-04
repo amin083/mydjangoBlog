@@ -1,0 +1,43 @@
+import random
+
+def initialize_population(size):
+    return [sorted(random.sample(range(1, 100), 20)) for _ in range(size)]
+
+def fitness(individual):
+    return sum(individual)
+
+def crossover(parent1, parent2):
+    crossover_point = random.randint(0, len(parent1) - 1)
+    child = parent1[:crossover_point] + parent2[crossover_point:]
+    return sorted(child)
+
+def mutate(individual, mutation_rate):
+    for i in range(len(individual)):
+        if random.random() < mutation_rate:
+            individual[i] = random.randint(1, 100)
+    return sorted(individual)
+
+def genetic_algorithm(population_size, generations, mutation_rate):
+    population = initialize_population(population_size)
+
+    for generation in range(generations):
+        population = sorted(population, key=fitness, reverse=True)
+        new_population = []
+
+        for _ in range(population_size // 2):
+            parent1 = random.choice(population)
+            parent2 = random.choice(population)
+            child1 = crossover(parent1, parent2)
+            child2 = crossover(parent2, parent1)
+            child1 = mutate(child1, mutation_rate)
+            child2 = mutate(child2, mutation_rate)
+            new_population.extend([child1, child2])
+
+        population = new_population
+
+    best_individual = sorted(population, key=fitness, reverse=True)[0]
+    return best_individual
+
+best_solution = genetic_algorithm(population_size=100, generations=100, mutation_rate=0.1)
+print("آرایه مرتب شده:")
+print(best_solution)

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <span class="fs-5 d-none d-sm-inline">Menu</span>
+                </a>
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link align-middle px-0">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">سفارشات</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                            <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">نوشته ها</span> </a>
+                        <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
+                            <li class="w-100">
+                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">افزودن نوشته </span></a>
+                            </li>
+                            <li>
+                                <form class="logout_link" action="{% url 'accounts:logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit">خروج</button>
+                                </form>
+                            </li>
+                                <div class="dropdown pb-4">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col py-3">
+                        <div class="container mt-3">
+                          <h2>جدول سفارشات</h2>
+                          <table class="table">
+                            <thead class="table-dark">
+                              <tr>
+                                <th> id </th>
+                                <th> user </th>
+                                <th>title</th>
+                                <th>keyword</th>
+                                <th>show detail</th>
+                              </tr>
+                            </thead>
+                     {% for order in orders %}
+                        <tr>
+                            <th>{{ order.id }}</th>
+                            <th>{{ order.user }}</th>
+                            <th>{{ order.title }}</th>
+                            <th>{{ order.keyword }}</th>
+                            <th><p> <a href="{% url 'accounts:detail' order_id=order.id %}"> نمایش جزییات </a></p></th>
+                        </tr>
+                         {% endfor %}
+                      {% csrf_token %}
+                    </tbody>
+
+                    </table>
+                        </div>
+                    </div>
+                </div>
+
+{% endblock %}

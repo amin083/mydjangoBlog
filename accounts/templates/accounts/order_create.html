@@ -1,13 +1,61 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="order_create">
-        <h1>
-            create your order
-        </h1>
-        <form class="site_form" action="{% url 'accounts:create' %}" method="post" enctype="multipart/form-data">
-            {{ form }}
-            {% csrf_token %}
-            <input type="submit" value="create">
-        </form>
-    </div>
+<div style="height: 100px;"></div>
+
+{#    #}
+<div class="order_create">
+    <form action="{% url 'accounts:create' %}" method="post" enctype="multipart/form-data" class="row g-3"style="padding: 50px">
+      <div class="col-md-3">
+        <label for="inputState" class="form-label">نوع محتوا</label>
+        <select name="typ_content" class="form-select">
+          <option value="landing">لندینگ</option>
+          <option value="product_description">توضیح محصول</option>
+          <option value="article">مقاله</option>
+          <option value="reportage">رپورتاژ</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label for="inputAddress2" class="form-label">تعداد کلمات</label>
+        <input type="number" class="form-control" name="num_word" placeholder="حداکثر 5000"  max="5000">
+      </div>
+      <div class="col-md-3">
+        <label for="inputAddress" class="form-label">عنوان اصلی</label>
+        <input type="text" class="form-control" name="title" placeholder="تولید محتوا">
+      </div>
+      <div class="col-md-3">
+        <label for="inputAddress2" class="form-label">کلمه کلیدی</label>
+        <input type="text" class="form-control" name="keyword">
+      </div>
+      <div class="col-md-3">
+        <label for="inputState" class="form-label">سطح محتوا</label>
+        <select name="level_content" class="form-select">
+          <option value="simple_content">ساده</option>
+          <option value="Semi-specialized_content">محتوای نیمه تخصصی</option>
+          <option value="Specialized_content">محتوای تخصصی</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+          <label for="inputState" class="form-label">توضیحات بیشتر</label>
+         <textarea class="form-control" name="body" cols="" rows="" required=""></textarea>
+      </div>
+      <div class="col-12">
+          <input type="submit"class="btn btn-primary" value="create">
+      </div>
+        {% csrf_token %}
+    </form>
+</div>
+{#    #}
+
+{#    <div class="order_create">#}
+{#        <h1>#}
+{#            create your order#}
+{#        </h1>#}
+{#        <form class="site_form" action="{% url 'accounts:create' %}" method="post" enctype="multipart/form-data">#}
+{#            {{ form }}#}
+{#            {% csrf_token %}#}
+{#            <input type="submit" value="create">#}
+{#        </form>#}
+{#    </div>#}
 {% endblock %}
+
+

@@ -9,6 +9,10 @@ from .models import Order
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
+from django.contrib.auth import authenticate, login
+from .forms import UploadFileForm
+from docx import Document
+
 
 def signup_view(request):
     if request.method == 'POST':
@@ -17,7 +21,7 @@ def signup_view(request):
             user = form.save()
             login(request, user)
             # login
-            return redirect('articles:list')
+            return redirect('accounts:user_profile')
     else:
         form = UserCreationForm()
     return render(request, 'accounts/signup.html', {'form': form})
@@ -27,11 +31,18 @@ def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
-            # login user
+            # User login
             user = form.get_user()
             login(request, user)
-            if 'next' in request.POST:
-                return redirect(request.POST.get('next'))
+
+            # Check if the user is a superuser
+            if user.is_superuser:
+                return redirect('accounts:admin_order_list')
+
+            # Check if there's a 'next' parameter in the POST data
+            next_url = request.POST.get('next')
+            if next_url:
+                return redirect(next_url)
             else:
                 return redirect('accounts:user_profile')
     else:
@@ -42,7 +53,7 @@ def login_view(request):
 def logout_view(request):
     if request.method == 'POST':
         logout(request)
-        return redirect('articles:list')
+        return redirect('accounts:user_profile')
 
 
 @login_required
@@ -56,10 +67,11 @@ def order_list(request):
 def order_detail(request, order_id):
     user = request.user
     order = models.Order.objects.get(id=order_id)
-    if order.user == user:
+    if order.user == user.is_superuser:
+       exit()
+    else:
         return render(request, 'accounts/order_detail.html', {'order': order})
-    return redirect('accounts:order_list')
-
+    return render(request, 'accounts/order_detail.html', {'order': order})
 @login_required
 def order_create(request):
     if request.method == 'POST':
@@ -87,3 +99,36 @@ def history_view(request):
 @login_required
 def situation_view(request):
     return render(request, 'about.html')
+
+
+@login_required
+def admin_order_list(request):
+    order = Order.objects.all()
+    return render(request, 'accounts/admin_order_list.html',{'orders':order})
+
+def updat_customer(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            # ذخیره فایل در دیسک
+            uploaded_file = request.FILES['file']
+            file_path = handle_uploaded_file(uploaded_file)
+
+            # خواندن محتوای فایل Word
+            document = Document(file_path)
+            content = '\n'.join([paragraph.text for paragraph in document.paragraphs])
+
+            # ارسال محتوا به قالب و یا انجام دیگر عملیات مورد نظر
+            # در اینجا می‌توانید به عنوان مثال از content یا document استفاده کنید
+
+            return render(request, 'result.html', {'content': content})
+    else:
+        form = UploadFileForm()
+    return render(request, 'updat_cutomer.html', {'form': form})
+def handle_uploaded_file(file):
+    file_path = 'uploaded_files/' + file.name
+    with open(file_path, 'wb') as destination:
+        for chunk in file.chunks():
+            destination.write(chunk)
+    return file_path
+

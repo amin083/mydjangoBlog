@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
+
 <h1>login</h1>
-<body style="background-color: #C4D7B2;">
    <div class="container-sm center">
-        <div class=" card col-sm-6 mx-auto " style="background-color: #F7FFE5;">
+        <div>
             <form class="card-body d-grid" action="{% url 'accounts:login' %}" method="POST">
                 {{ form }}
-                {% csrf_token %}
                 {% if request.GET.next %}
                     <input type="hidden" name="next" value="{{ request.GET.next }}">
                 {% endif %}
                <button class="btn button justify-content-center mt-3" type="submit">login</button>
+            {% csrf_token %}
             </form>
         </div>
    </div>

@@ -2,12 +2,16 @@
 {% block content %}
 <div class="order_detail">
     <div class="accounts">
-        <img src="{{ order.image.url }}">
-        <h4>{{ order.title }}</h4>
-        <p>{{ order.body }}</p>
-        <p>{{ order.keyword }}</p>
-        <p>{{ order.date }}</p>
-        <p>{{ order.image }}</p>
+{#        <img src="{{ order.image.url }}">#}
+
+        <h4> عنوان: {{ order.title }}</h4>
+        <p> تعداد کلمات:  {{ order.num_word }}</p>
+        <p>نوع محتوا: {{ order.get_typ_content_display }}</p>
+        <p> سطح محتوا:  {{ order.get_level_content_display }}</p>
+        <p> توضیحات:  {{ order.body }}</p>
+        <p> کلمه کلیدی:  {{ order.keyword }}</p>
+        <p> {{ order.date }}</p>
+
     </div>
 </div>
 {% endblock %}

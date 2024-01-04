@@ -3,16 +3,30 @@
 articles
 {% endblock %}
 {% block content %}
-<div>
-    <h1>Order_list_history</h1>
-    <div class="accounts">
-    <h2>View Order</h2>
-        {% for order in orders %}
-            <div class="accounts"></div>
-            <h2> <a href="{% url 'accounts:detail' order_id=order.id %}">{{ order.title }}</a></h2>
-            <p>{{ order.snippet }}</p>
-            <p>{{ order.date }}</p>
-        {% endfor %}
-    </div>
-</div>
+ <div class="accounts">
+    <h2>سفارشات ثبت شده</h2>
+     {% for order in orders %}
+     <div class="accounts"></div>
+        <div class="list-group">
+            <a href="{% url 'accounts:detail' order_id=order.id %}" class="list-group-item list-group-item-action aria-current='true'">{{ order.title }}
+              <p>{{ order.snippet }}</p>
+                <small>{{ order.date }}</small></a>
+        </div>
+     </div>
+     {% endfor %}
+ </div>
 {% endblock %}
+
+
+
+{#<div>#}
+{#    <div class="accounts">#}
+{#    <h2>سفارشات ثبت شده</h2>#}
+{#        {% for order in orders %}#}
+{#            <div class="accounts"></div>#}
+{#            <h2> <a href="{% url 'accounts:detail' order_id=order.id %}">  {{ order.title }}</a></h2>#}
+{#            <p>{{ order.snippet }}</p>#}
+{#            <p>{{ order.date }}</p>#}
+{#        {% endfor %}#}
+{#    </div>#}
+{#</div>#}

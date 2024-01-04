@@ -1,0 +1,29 @@
+.sidebar {
+      height: 100%;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #333;
+      padding-top: 20px;
+    }
+
+    /* رنگ متن منوی سایدبار */
+    .sidebar a {
+      padding: 15px 25px;
+      text-align: left;
+      text-decoration: none;
+      font-size: 20px;
+      color: #fff;
+      display: block;
+    }
+
+    /* تغییر رنگ متن منو در وضعیت هاور (روی کلمه رفتن موس) */
+    .sidebar a:hover {
+      background-color: #555;
+    }
+
+    /* اندازه دهی ناوبری */
+    .navbar {
+      background-color: #007BFF;
+    }
