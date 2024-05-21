@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<form action="{% url 'accounts:admin_upload_file_document' document_id=document.id %}"  method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.document_id.as_p }}
+    <label class="form-label" for="customFile" name="admin_uploade_file">Default file input example</label>
+    <input type="file" class="form-control" id="customFile" name="admin_uploade_file">
+    <button type="submit">آپلود فایل ورد</button>
+</form>
+
+
+
+{% endblock %}

@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+
+<h2> لیست مقالات بارگذاری شده: </h2>
+<div class="accounts">
+     {% for document in documents %}
+     <div class="accounts"></div>
+        <div class="list-group">
+            <a href="{% url 'accounts:document_detail' document_id=document.id %}" class="list-group-item list-group-item-action aria-current='true'">{{ document.title }}</a>
+              <p>{{ order.snippet }}</p>
+                <small>{{ document.date }}</small></a>
+        </div>
+         </div>
+     </div>
+         {% endfor %}
+
+{% endblock %}
+

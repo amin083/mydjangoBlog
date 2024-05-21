@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+{#<h1>آپلود فایل برای سفارش {{ order.title }}</h1>#}
+{#<form action="{% url 'accounts:admin_upload_file' order_id=order.id %}" method="post" enctype="multipart/form-data">#}
+{#    {% csrf_token %}#}
+{##}
+{#    {{ form.as_p }}#}
+{#    <input type="submit" value="آپلود">#}
+{#</form>#}
+<form action="{% url 'accounts:admin_upload_file' order_id=order.id %}"  method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.order_id.as_p }}
+    <label class="form-label" for="customFile" name="admin_uploade_file">Default file input example</label>
+    <input type="file" class="form-control" id="customFile" name="admin_uploade_file">
+    <button type="submit">آپلود فایل ورد</button>
+</form>
+
+
+
+{% endblock %}

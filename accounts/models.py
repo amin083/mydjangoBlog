@@ -39,10 +39,28 @@ class Order(models.Model):
     body= models.TextField()
     image = models.ImageField(default='defalt.jpg', blank=True)
     date = models.DateTimeField(auto_now_add=True)
+    admin_uploade_file = models.FileField(upload_to='orders/')
+
 
     def __str__(self):
         return self.title
 
     def snippet(self):
         return self.body[0:100] + " ..."
+
+# class WordDocument(models.Model):
+#     document = models.FileField(upload_to='word_documents/')
+
+
+class Document(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
+    title = models.CharField(max_length=180)
+    uploaded_file = models.FileField(upload_to='documents/')
+    admin_uploade_file = models.FileField(upload_to='documents/')
+
+    def __str__(self):
+        return self.title
+    # For images, you'd use ImageField() instead
+    # uploaded_image = models.ImageField(upload_to='images/')
 

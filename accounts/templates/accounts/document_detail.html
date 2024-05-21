@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+<div class="order_detail">
+    <div class="accounts">
+{#        <img src="{{ order.image.url }}">#}
+
+        <h4> عنوان: {{ document.title }}</h4>
+        {% if document.admin_uploade_file %}
+            <a href="{% url 'accounts:admin_download_file_document' document_id=document.id %}">دانلود فایل ورد</a>
+        {% else %}
+            <p>مقاله هنوز آماده نشده است.</p>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

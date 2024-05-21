@@ -1,10 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <span class="fs-5 d-none d-sm-inline">Menu</span>
+                </a>
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link align-middle px-0">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">سفارشات</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link align-middle px-0">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">نوشته ها</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link align-middle px-0">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">افزودن نوشته</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+
+
+    <div class="row row-cols-3 g-4">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><a href="{% url 'accounts:admin_document_list' %}">ویراستاری مقالات کارفرما</a></h5>
+                    <p class="card-text">
+                        This is a longer card with supporting text below as a natural lead-in to
+                        additional content. This content is a little bit longer.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5><a href="{% url 'accounts:admin_order_list' %}"> سفارشات تولید محتوا</a></h5>
+                    <p class="card-text">
+                        This is a longer card with supporting text below as a natural lead-in to
+                        additional content. This content is a little bit longer.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% csrf_token %}
+
+{% endblock %}
+
+
+

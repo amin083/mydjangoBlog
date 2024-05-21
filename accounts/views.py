@@ -1,18 +1,24 @@
-from django.contrib.auth.decorators import login_required
-from . import models
-from django.shortcuts import render, HttpResponse, redirect
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from . import forms
-from django.contrib.auth import login, logout
-from .forms import OrderForm
-from .models import Order
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
+import os
+import zipfile
+from typing import io
 
-from django.contrib.auth import authenticate, login
-from .forms import UploadFileForm
+from django.contrib.auth import login
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.http import HttpResponseForbidden, HttpResponseNotFound
+from django.shortcuts import redirect, HttpResponse
+from django.shortcuts import render, get_object_or_404
 from docx import Document
 
+from . import forms
+from . import models
+from .forms import DocumentForm, WordFileUploadForm_document
+from .forms import OrderForm
+from .models import Document
+from .models import Order
+
+from .forms import WordFileUploadForm
 
 def signup_view(request):
     if request.method == 'POST':
@@ -37,7 +43,7 @@ def login_view(request):
 
             # Check if the user is a superuser
             if user.is_superuser:
-                return redirect('accounts:admin_order_list')
+                return redirect('accounts:admin_profile')
 
             # Check if there's a 'next' parameter in the POST data
             next_url = request.POST.get('next')
@@ -97,38 +103,179 @@ def history_view(request):
 
 
 @login_required
-def situation_view(request):
-    return render(request, 'about.html')
+def admin_profile(request):
+    return render(request, 'accounts/admin_profile.html')
 
 
 @login_required
 def admin_order_list(request):
-    order = Order.objects.all()
-    return render(request, 'accounts/admin_order_list.html',{'orders':order})
-
-def updat_customer(request):
     if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            # ذخیره فایل در دیسک
-            uploaded_file = request.FILES['file']
-            file_path = handle_uploaded_file(uploaded_file)
-
-            # خواندن محتوای فایل Word
-            document = Document(file_path)
-            content = '\n'.join([paragraph.text for paragraph in document.paragraphs])
-
-            # ارسال محتوا به قالب و یا انجام دیگر عملیات مورد نظر
-            # در اینجا می‌توانید به عنوان مثال از content یا document استفاده کنید
-
-            return render(request, 'result.html', {'content': content})
+        order = Order.objects.get(pk=request.POST['order_id'])
+        uploaded_file = request.FILES['uploaded_file']
+        order.admin_uploade_file = uploaded_file
+        order.save()
+        return redirect('accounts:admin_order_list')
     else:
-        form = UploadFileForm()
-    return render(request, 'updat_cutomer.html', {'form': form})
-def handle_uploaded_file(file):
-    file_path = 'uploaded_files/' + file.name
-    with open(file_path, 'wb') as destination:
-        for chunk in file.chunks():
-            destination.write(chunk)
-    return file_path
+        orders = Order.objects.all()
+        return render(request, 'accounts/admin_order_list.html', {'orders': orders})
 
+@login_required
+def delete_word_file(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    if order:
+        if request.method == 'POST':
+            # حذف فایل از آبجکت سفارش
+            order.admin_uploade_file.delete()
+            # ذخیره تغییرات
+            order.save()
+            return redirect('accounts:admin_order_list')
+
+        return render(request, 'delete_word_file.html', {'order': order})
+
+
+@login_required
+def delete_word_file_document(request, document_id):
+    document = get_object_or_404(Document, id=document_id)
+    if document:
+        if request.method == 'POST':
+            # حذف فایل از آبجکت سفارش
+            document.admin_uploade_file.delete()
+            # ذخیره تغییرات
+            document.save()
+            return redirect('accounts:admin_document_list')
+
+        return render(request, 'delete_word_file_document.html', {'document': document})
+
+@login_required
+def admin_download_file(request, order_id):
+    order = Order.objects.get(pk=order_id)
+    file_path = order.admin_uploade_file.path
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as f:
+            response = HttpResponse(f.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+            response['Content-Disposition'] = 'attachment; filename=order_{}.docx'.format(order.id)
+            return response
+    else:
+        return HttpResponseNotFound('فایل هنوز اماده نشده')
+
+
+@login_required
+def admin_download_file_document(request, document_id):
+    document = Document.objects.get(pk=document_id)
+    file_path = document.admin_uploade_file.path
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as f:
+            response = HttpResponse(f.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+            response['Content-Disposition'] = 'attachment; filename=order_{}.docx'.format(document.id)
+            return response
+    else:
+        return HttpResponseNotFound('فایل هنوز اماده نشده')
+
+# @login_required
+# def admin_document_list(request):
+#     user = request.user
+#     document = models.Document.objects.filter(user=user)
+#
+#     # Check if user has access to download the document
+#     if document.user != user and not user.is_superuser:
+#         return HttpResponseForbidden()
+#
+#     # Prepare file response
+#     response = HttpResponse(document.uploaded_file.read(),
+#                             content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+#     response['Content-Disposition'] = f'attachment; filename={document.title}.docx'  # Set download filename
+#
+#     return response
+
+@login_required
+def admin_document_list(request):
+    if request.method == 'POST':
+        document = Document.objects.get(pk=request.POST['document_id'])
+        uploaded_file = request.FILES['uploaded_file']
+        document.uploaded_file = uploaded_file
+        document.save()
+        return redirect('accounts:admin_document_list')
+    else:
+        documents = Document.objects.all()
+        return render(request, 'accounts/admin_document_list.html', {'documents': documents})
+
+@login_required
+def admin_upload_file(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    if request.method == 'POST':
+        form = WordFileUploadForm(request.POST, request.FILES, instance=order)
+        if form.is_valid():
+            form.save()
+            return redirect('accounts:admin_order_list')
+
+    else:
+        form = WordFileUploadForm()
+
+    return render(request, 'accounts/admin_upload_file.html', {'form': form, 'order': order})
+
+@login_required
+def admin_upload_file_document(request, document_id): #  برای ویراستاری بار گذاری ادمین
+    document = get_object_or_404(Document, id=document_id)
+
+    if request.method == 'POST':
+        form = WordFileUploadForm_document(request.POST, request.FILES, instance=document)
+        if form.is_valid():
+            form.save()
+            return redirect('accounts:admin_document_list')
+
+    else:
+        form = WordFileUploadForm_document()
+
+    return render(request, 'accounts/admin_upload_file_document.html', {'form': form, 'document': document})
+
+
+
+
+@login_required
+def upload_file(request):
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.user = request.user
+            instance.save()
+            # form.save()
+            return redirect('accounts:document_list')
+    else:
+        form = DocumentForm()
+    return render(request, 'accounts/upload_file.html', {'form': form})
+
+def document_list(request): # for user
+    user = request.user
+    documents = Document.objects.filter(user=user)
+    return render(request, 'accounts/document_list.html', {'documents': documents})
+
+@login_required
+def document_detail(request, document_id):
+    user = request.user
+    document = models.Document.objects.get(id=document_id)
+    if document.user != user and not user.is_superuser:
+        return HttpResponseForbidden()
+
+    # Prepare file response
+    response = HttpResponse(document.uploaded_file.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = f'attachment; filename={document.title}.docx'  # Set download filename
+
+    return render(request, 'accounts/document_detail.html', {'document': document})
+
+
+# @login_required
+# def download_document(request, document_id):
+#     user = request.user
+#     document = get_object_or_404(Document, id=document_id)
+#
+#     # Check if user has access to download the document
+#     if document.user != user and not user.is_superuser:
+#         return HttpResponseForbidden()
+#
+#     # Prepare file response
+#     response = HttpResponse(document.uploaded_file.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+#     response['Content-Disposition'] = f'attachment; filename={document.title}.docx'  # Set download filename
+#
+#     return response

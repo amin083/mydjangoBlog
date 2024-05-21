@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
 
+
+
 <div class="container-fluid">
     <div class="row flex-nowrap">
         <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
             <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                    <span class="fs-5 d-none d-sm-inline">Menu</span>
+                <a href="{% url 'accounts:admin_profile' %}" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <span class="fs-5 d-none d-sm-inline">صفحه اصلی </span>
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li class="nav-item">
@@ -41,7 +43,10 @@
                                 <th> user </th>
                                 <th>title</th>
                                 <th>keyword</th>
+                                <th>آپلود فایل</th>
                                 <th>show detail</th>
+                                <th>فایل آپلود شده</th>
+                                <th>حذف</th>
                               </tr>
                             </thead>
                      {% for order in orders %}
@@ -50,7 +55,25 @@
                             <th>{{ order.user }}</th>
                             <th>{{ order.title }}</th>
                             <th>{{ order.keyword }}</th>
+                             <th>
+                                <form action="{% url 'accounts:admin_upload_file' order_id=order.id %}" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+{#                                    <input type="file" name="admin_uploade_file">#}
+                                    <input type="submit" value="آپلود"name="admin_uploade_file">
+                                </form>
+                             </th>
                             <th><p> <a href="{% url 'accounts:detail' order_id=order.id %}"> نمایش جزییات </a></p></th>
+                            <th>{{ order.admin_uploade_file }}</th>
+                            <th>
+                                {% if order.admin_uploade_file %}
+                                    <form method="post" action="{% url 'accounts:delete_word_file' order.id %}" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" onclick="return confirm('آیا از حذف فایل ورد این سفارش اطمینان دارید؟')">حذف فایل ورد</button>
+                                    </form>
+                                {% else %}
+                                    <p>مقاله هنوز آماده نشده است.</p>
+                                {% endif %}
+                            </th>
                         </tr>
                          {% endfor %}
                       {% csrf_token %}
@@ -60,5 +83,6 @@
                         </div>
                     </div>
                 </div>
+</div>
 
 {% endblock %}

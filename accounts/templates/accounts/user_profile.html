@@ -16,7 +16,10 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'accounts:order_list' %}"><span class="ms-1 d-none d-sm-inline">وضعیت سفارشات</span> </a>
+                        <a href="{% url 'accounts:order_list' %}">وضعیت سفارشات تولید محتوا</a>
+                            <li class="w-100">
+                                <a href="{% url 'accounts:document_list' %}" class="nav-link px-0"> <span class="d-none d-sm-inline">لیست مقالات ویراستاری</span></a>
+                            </li>
                             <li class="w-100">
                                 <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">شارژ کیف پول</span></a>
                             </li>
@@ -46,7 +49,7 @@
                             <div class="card">
                               <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top" alt="Hollywood Sign on The Hill">
                               <div class="card-body">
-                                <h5 class="card-title"><a href="{% url 'accounts:updat_customer' %}">ویراستاری مقالات شما</a></h5>
+                                <h5 class="card-title"><a href="{% url 'accounts:upload_file' %}">ویراستاری مقالات شما</a></h5>
                                 <p class="card-text">
                                   This is a longer card with supporting text below as a natural lead-in to
                                   additional content. This content is a little bit longer.
@@ -66,16 +69,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col">
-                            <div class="card">
-                              <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/043.webp" class="card-img-top" alt="Los Angeles Skyscrapers">
-                              <div class="card-body">
-                                <h5 class="card-title">بارگذاری مقالات</h5>
-                                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                                  additional content. This content is a little bit longer.</p>
-                              </div>
-                            </div>
-                          </div>
+
 
                         </div>
                               {% csrf_token %}

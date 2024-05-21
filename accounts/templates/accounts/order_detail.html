@@ -11,6 +11,11 @@
         <p> توضیحات:  {{ order.body }}</p>
         <p> کلمه کلیدی:  {{ order.keyword }}</p>
         <p> {{ order.date }}</p>
+        {% if order.admin_uploade_file %}
+            <a href="{% url 'accounts:admin_download_file' order_id=order.id %}">دانلود فایل ورد</a>
+        {% else %}
+            <p>مقاله هنوز آماده نشده است.</p>
+        {% endif %}
 
     </div>
 </div>
